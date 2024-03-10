@@ -1,0 +1,19 @@
+{
+    "name": "hamishvexfleming/keycloak-api",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^7.8",
+        "guzzlehttp/guzzle-services": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "HamishVexFleming\\KeycloakApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Hamish Fleming",
+            "email": "fleming_hamish@yahoo.com"
+        }
+    ]
+}
