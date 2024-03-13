@@ -7,6 +7,21 @@ return array(
     'baseUri' => $config['baseUri'],
     'apiVersion'  => '1.0',
     'operations'  => array(
+		// /realms/{realm}/.well-known/openid-configuration
+		'getOpenIdEndpoints' => array(
+			'uri' => 'realms/{realm}/.well-known/openid-configuration',
+			'description' => 'Get OpenID Connect well-known configuration',
+			'httpMethod' => 'GET',
+			'parameters' => array(
+				'realm' => array(
+					'location'    => 'uri',
+					'description' => 'The Realm name',
+					'type'        => 'string',
+					'required'    => true,
+				),
+			)
+		),
+
 
         // Attack Detection
 
@@ -5613,6 +5628,58 @@ return array(
             ) + $CredentialRepresentation,
         ),
 
+	'resetUserPasswordEmail' => array(
+	    'uri' => 'admin/realms/{realm}/users/{id}/reset-password-email',
+	    'description' => 'Send a reset password email to the user',
+	    'httpMethod' => 'PUT',
+	    'parameters' => array(
+		'realm' => array(
+		    'location'    => 'uri',
+		    'description' => 'The Realm name',
+		    'type'        => 'string',
+		    'required'    => true,
+		),
+		'id' => array(
+		    'location'    => 'uri',
+		    'description' => 'User id',
+		    'type'        => 'string',
+		    'required'    => true,
+		),
+	    ),
+	),
+
+	'getUpdatePasswordLink' => array(
+	    'uri' => 'realms/{realm}/ggsa-resource/get-update-password-link',
+	    'description' => 'Get a link to update the user’s password',
+	    'httpMethod' => 'GET',
+	    'parameters' => array(
+		'realm' => array(
+		    'location'    => 'uri',
+		    'description' => 'The Realm name',
+		    'type'        => 'string',
+		    'required'    => true,
+		),
+		'email' => array(
+		    'location'    => 'query',
+		    'description' => 'User email',
+		    'type'        => 'string',
+		    'required'    => true,
+		),
+		'redirectUri' => array(
+		    'location'    => 'query',
+		    'description' => 'Redirect uri',
+		    'type'        => 'string',
+		    'required'    => true,
+		),
+		'clientId' => array(
+		    'location'    => 'query',
+		    'description' => 'Client id',
+		    'type'        => 'string',
+		    'required'    => true,
+		),
+	    ),
+	),
+
         'syncUserStorage' => array(
             'uri'         => 'admin/realms/{realm}/user-storage/{id}/sync',
             'description' => 'Trigger sync of users. Action can be "triggerFullSync" or "triggerChangedUsersSync"',
@@ -5753,3 +5820,4 @@ return array(
 
     ) //End of Operations Array
 );//End of return array
+
