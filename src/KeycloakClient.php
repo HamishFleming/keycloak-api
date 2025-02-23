@@ -20,6 +20,8 @@ use GuzzleHttp\Command\Guzzle\Serializer;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 
 use HamishVexFleming\KeycloakApi\TokenStorages\RuntimeTokenStorage as RuntimeTokenStorage;
 use HamishVexFleming\KeycloakApi\TokenStorages\TokenStorage;
@@ -122,5 +124,29 @@ class KeycloakClient extends GuzzleClient {
 		}
 
 		return $description;
+	}
+
+	public function getToken(): ?array {
+		$client  = new Client();
+		$headers = array( 'Content-Type' => 'application/x-www-form-urlencoded' );
+		$options = array(
+			'form_params' => array(
+				'client_id'     => $this->getConfig( 'client_id' ),
+				'client_secret' => $this->getConfig( 'client_secret' ),
+				'grant_type'    => 'client_credentials',
+			),
+		);
+		$url     = $this->getBaseUri() . '/realms/' . $this->getRealmName() . '/protocol/openid-connect/token';
+		$request = new Request( 'POST', $url, $headers );
+
+		try {
+			$response = $client->send( $request, $options );
+			$body     = json_decode( $response->getBody()->getContents(), true );
+			$this->getConfig( 'token_storage' )->saveToken( $body );
+			return $body;
+		} catch ( RequestException $e ) {
+			// Handle request exception
+			return null;
+		}
 	}
 }

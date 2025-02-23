@@ -21,9 +21,11 @@ $kc = KeycloakClient::factory(
 		'grant_type'    => 'client_credentials',
 		'client_id'     => 'wp',
 		'client_secret' => 'tLi4CwiAmfvlwTH56kWaGgWDadEbLnBG',
-		/* 'scope'         => 'openid', */
 	)
 );
+
+$token = $kc->getToken();
+var_dump( $token );
 
 $users = $kc->getUsers();
 var_dump( $users );
